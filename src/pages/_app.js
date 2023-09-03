@@ -46,7 +46,8 @@ const App = (props) => {
     <>
       <Head>
         <title>{head_data.name}</title>
-        <link rel='shortcut icon' href={head_data?.favicon_img || headData?.favicon_img} />
+        <link rel='shortcut icon' href={head_data?.favicon_img} />
+        <meta property="og:image" content={head_data?.logo_img} />
         {/* <meta
           name='description'
           content={head_data?.og_description || headData?.og_description}
@@ -56,7 +57,6 @@ const App = (props) => {
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={head_data?.name || headData?.name} />
-        <meta property="og:image" content={head_data?.og_img || headData?.og_img} />
         <meta property="og:url" content={'https://' + head_data?.dns || headData?.dns} />
         <meta property="og:description" content={head_data?.og_description || headData?.og_description} />
         <meta name="author" content="purplevery" />
