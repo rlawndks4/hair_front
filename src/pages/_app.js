@@ -34,7 +34,7 @@ const App = (props) => {
   const getLayout = Component.getLayout ?? ((page) => page);
   let head_data = {
     id: 1,
-    name: 'hair',
+    name: '서경대학교 미용실 시스템',
     logo_img: '/logo/logo.png',
     dark_logo_img: '/logo/logo.png',
     favicon_img: '/logo/favicon.png',
@@ -45,7 +45,7 @@ const App = (props) => {
   return (
     <>
       <Head>
-        <title>서경대학교 미용실 시스템</title>
+        <title>{head_data.name}</title>
         <link rel='shortcut icon' href={head_data?.favicon_img || headData?.favicon_img} />
         {/* <meta
           name='description'
