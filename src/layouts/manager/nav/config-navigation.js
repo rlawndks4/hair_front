@@ -2,6 +2,7 @@
 import { PATH_MANAGER } from '../../../routes/paths';
 // components
 import SvgColor from '../../../components/svg-color';
+import { useAuthContext } from 'src/auth/useAuthContext';
 
 // ----------------------------------------------------------------------
 
@@ -35,10 +36,11 @@ const ICONS = {
 
 const navConfig = () => {
 
+  const { user } = useAuthContext();
   return [
     // GENERAL
     // ----------------------------------------------------------------------
-   
+
     // MANAGEMENT
     // ----------------------------------------------------------------------
     {
@@ -54,20 +56,23 @@ const navConfig = () => {
         },
       ],
     },
-    {
-      items: [
+    ...(user?.level >= 40 ?
+      [
         {
-          title: '미용실관리',
-          path: PATH_MANAGER.shop.root,
-          icon: ICONS.chat,
-          children: [
-            { title: '미용실관리', path: PATH_MANAGER.shop.list },
-            { title: '미용실추가', path: PATH_MANAGER.shop.add },
+          items: [
+            {
+              title: '미용실관리',
+              path: PATH_MANAGER.shop.root,
+              icon: ICONS.chat,
+              children: [
+                { title: '미용실관리', path: PATH_MANAGER.shop.list },
+                { title: '미용실추가', path: PATH_MANAGER.shop.add },
 
+              ],
+            },
           ],
         },
-      ],
-    },
+      ] : []),
     {
       items: [
         {
