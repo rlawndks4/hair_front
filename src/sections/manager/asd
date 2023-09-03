@@ -1,0 +1,30 @@
+server {
+listen 80;
+server_name rnjsshgml.cafe24.com
+root html;
+
+
+location / {
+        return 301 https://rnjsshgml.cafe24.com$request_uri;
+    }
+}
+
+server {
+
+    listen       443 ssl;
+    server_name  rnjsshgml.cafe24.com;
+    
+    client_max_body_size 64M;
+    
+    ssl_certificate     /etc/letsencrypt/live/rnjsshgml.cafe24.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/rnjsshgml.cafe24.com/privkey.pem;
+
+    location / {
+       proxy_pass http://rnjsshgml.cafe24.com:3000;
+
+    }
+ 
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+}

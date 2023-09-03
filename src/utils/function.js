@@ -99,7 +99,9 @@ export const getUserLevelByNumber = (num) => {
   if (num == 0)
     return '일반유저'
   else if (num == 10)
-    return '셀러'
+    return '미용사'
+  else if (num == 40)
+    return '관리자'
   else if (num == 50)
     return '개발사'
   else
