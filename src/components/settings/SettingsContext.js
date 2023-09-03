@@ -108,7 +108,7 @@ export function SettingsProvider({ children }) {
     try {
       let dns_data = {
         id:1,
-        name:'hair',
+        name:'서경대학교 미용실 시스템',
         logo_img:'/logo/logo.png',
         dark_logo_img:'/logo/logo.png',
         favicon_img:'/logo/favicon.png',
