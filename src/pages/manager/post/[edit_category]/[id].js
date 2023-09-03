@@ -1,5 +1,5 @@
 
-import { Button, Card, Grid, Stack, TextField, Typography } from "@mui/material";
+import { Button, Card, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { themeObj } from "src/components/elements/styled-components";
@@ -14,6 +14,7 @@ import { toast } from "react-hot-toast";
 import { useModal } from "src/components/dialog/ModalProvider";
 import dynamic from "next/dynamic";
 import { apiManager } from "src/utils/api-manager";
+import { post_category_list } from "src/data/data";
 const ReactQuill = dynamic(() => import('react-quill'), {
   ssr: false,
   loading: () => <p>Loading ...</p>,
@@ -24,21 +25,21 @@ const PostEdit = () => {
   const { themeMode } = useSettingsContext();
 
   const router = useRouter();
-
+  const [shopList, setShopList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState({
-    profile_file: undefined,
-    user_name: '',
-    phone_num: '',
-    nick_name: '',
-    user_pw: '',
+    post_file: undefined,
+    title: '',
+    shop_id: '',
     note: '',
+    type: undefined
   })
-
   useEffect(() => {
     settingPage();
   }, [router.asPath])
   const settingPage = async () => {
+    let shop_list = await apiManager('shops', 'list', {})
+    setShopList(shop_list?.content);
     if (router.query?.edit_category == 'edit') {
       let data = await apiManager('posts', 'get', {
         id: router.query.id
@@ -59,6 +60,9 @@ const PostEdit = () => {
       router.push('/manager/post');
     }
   }
+  useEffect(()=>{
+    console.log(item)
+  },[item])
   return (
     <>
       {!loading &&
@@ -69,15 +73,15 @@ const PostEdit = () => {
                 <Stack spacing={3}>
                   <Stack spacing={1}>
                     <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
-                      프로필사진
+                      메인이미지
                     </Typography>
-                    <Upload file={item.profile_file || item.profile_img} onDrop={(acceptedFiles) => {
+                    <Upload file={item.post_file || item.post_img} onDrop={(acceptedFiles) => {
                       const newFile = acceptedFiles[0];
                       if (newFile) {
                         setItem(
                           {
                             ...item,
-                            ['profile_file']: Object.assign(newFile, {
+                            ['post_file']: Object.assign(newFile, {
                               preview: URL.createObjectURL(newFile),
                             })
                           }
@@ -87,8 +91,8 @@ const PostEdit = () => {
                       setItem(
                         {
                           ...item,
-                          ['profile_img']: '',
-                          ['profile_file']: undefined,
+                          ['post_img']: '',
+                          ['post_file']: undefined,
                         }
                       )
                     }}
@@ -100,71 +104,81 @@ const PostEdit = () => {
             <Grid item xs={12} md={6}>
               <Card sx={{ p: 2, height: '100%' }}>
                 <Stack spacing={3}>
-                  <TextField
-                    label='아이디'
-                    value={item.user_name}
-                    onChange={(e) => {
+                  <FormControl>
+                    <InputLabel>카테고리</InputLabel>
+                    <Select label='카테고리' value={item.type} onChange={(e) => {
                       setItem(
                         {
                           ...item,
-                          ['user_name']: e.target.value
+                          ['type']: e.target.value.toString()
                         }
                       )
-                    }} />
-                  {router.query?.edit_category == 'add' &&
+                    }}>
+                      {post_category_list && post_category_list.map((cate, idx) => {
+                        return <MenuItem value={idx}>{cate}</MenuItem>
+                      })}
+                    </Select>
+                  </FormControl>
+                  {(item.type == 0 || item.type == 2) &&
                     <>
-                      <TextField
-                        label='패스워드'
-                        value={item.user_pw}
-
-                        type='password'
-                        onChange={(e) => {
+                      <FormControl>
+                        <InputLabel>미용실선택</InputLabel>
+                        <Select label='미용실선택' value={item.shop_id} onChange={(e) => {
                           setItem(
                             {
                               ...item,
-                              ['user_pw']: e.target.value
+                              ['shop_id']: e.target.value
                             }
                           )
-                        }} />
+                        }}>
+                          {shopList && shopList.map((shop, idx) => {
+                            return <MenuItem value={shop?.id}>{shop.name}</MenuItem>
+                          })}
+                        </Select>
+                      </FormControl>
                     </>}
                   <TextField
-                    label='닉네임'
-                    value={item.nick_name}
+                    label='제목'
+                    value={item.title}
                     onChange={(e) => {
                       setItem(
                         {
                           ...item,
-                          ['nick_name']: e.target.value
-                        }
-                      )
-                    }} />
-                  <TextField
-                    label='전화번호'
-                    value={item.phone_num}
-                    placeholder="하이픈(-) 제외 입력"
-                    type='number'
-                    onChange={(e) => {
-                      setItem(
-                        {
-                          ...item,
-                          ['phone_num']: e.target.value
+                          ['title']: e.target.value
                         }
                       )
                     }} />
                   <Stack spacing={1}>
-                  <TextField
-                        fullWidth
-                        label="고객메모"
-                        multiline
-                        rows={4}
-                        value={item.note}
-                        onChange={(e) => {
-                          setItem({
-                            ...item,
-                            ['note']: e.target.value
-                          })
-                        }}
-                      />
+                    <ReactQuill
+                      className="max-height-editor"
+                      theme={'snow'}
+                      id={'content'}
+                      placeholder={''}
+                      value={item.note}
+                      modules={react_quill_data.modules}
+                      formats={react_quill_data.formats}
+                      onChange={async (e) => {
+                        let note = e;
+                        if (e.includes('<img src="') && e.includes('base64,')) {
+                          let base64_list = e.split('<img src="');
+                          for (var i = 0; i < base64_list.length; i++) {
+                            if (base64_list[i].includes('base64,')) {
+                              let img_src = base64_list[i];
+                              img_src = await img_src.split(`"></p>`);
+                              let base64 = img_src[0];
+                              img_src = await base64toFile(img_src[0], 'note.png');
+                              const response = await uploadFileByManager({
+                                file: img_src
+                              });
+                              note = await note.replace(base64, response?.url)
+                            }
+                          }
+                        }
+                        setItem({
+                          ...item,
+                          ['note']: note
+                        });
+                      }} />
                   </Stack>
                 </Stack>
               </Card>
@@ -174,7 +188,7 @@ const PostEdit = () => {
                 <Stack spacing={1} style={{ display: 'flex' }}>
                   <Button variant="contained" style={{
                     height: '48px', width: '120px', marginLeft: 'auto'
-                  }} onClick={()=>{
+                  }} onClick={() => {
                     setModal({
                       func: () => { onSave() },
                       icon: 'material-symbols:edit-outline',

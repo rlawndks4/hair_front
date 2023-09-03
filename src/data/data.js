@@ -7,7 +7,7 @@ export const logoSrc = () => {
   const { themeDnsData, themeMode } = useSettingsContext();
   let default_img = 'https://backend.comagain.kr/storage/images/logos/IFFUcyTPtgF887r0RPOGXZyLLPvp016Je17MENFT.svg';
 
-  return themeDnsData[`${themeMode=='dark'?'dark_':''}logo_img`]
+  return themeDnsData[`${themeMode == 'dark' ? 'dark_' : ''}logo_img`]
 };
 export const KAKAO_OBJ = {
   BACKGROUND: '#F9E000',
@@ -72,3 +72,8 @@ export const returnArticleCategory = {
   }
 }
 
+export const post_category_list = [
+  '후기',
+  '공지사항',
+  '업장정보소개'
+]

@@ -12,50 +12,39 @@ const ReservationList = () => {
   const { setModal } = useModal()
   const defaultColumns = [
     {
-      id: 'profile_img',
-      label: '유저프로필',
+      id: 'shop_name',
+      label: '미용실명',
       action: (row) => {
-        return <Avatar src={row['profile_img'] ?? "---"} />
+        return row['shop_name'] ?? "---"
       }
     },
     {
-      id: 'nick_name',
-      label: '닉네임',
+      id: 'user_name',
+      label: '유저아이디',
       action: (row) => {
-        return row['nick_name'] ?? "---"
+        return row['user_name'] ?? "---"
       }
     },
     {
-      id: 'phone_num',
-      label: '휴대폰번호',
+      id: 'date',
+      label: '예약날짜',
       action: (row) => {
-        return row['phone_num'] ?? "---"
+        row['date'] = row?.date.toString();
+        return `${row['date'].substring(0,4)}-${row['date'].substring(4,6)}-${row['date'].substring(6,8)}`
+      }
+    },
+    {
+      id: 'time',
+      label: '예약시간',
+      action: (row) => {
+        return row['time'] ?? "---"
       }
     },
     {
       id: 'created_at',
-      label: '가입일',
+      label: '예약일',
       action: (row) => {
         return row['created_at'] ?? "---"
-      }
-    },
-    {
-      id: 'edit_password',
-      label: '비밀번호 변경',
-      action: (row) => {
-        return (
-          <>
-            <IconButton onClick={() => {
-              setDialogObj({ ...dialogObj, changePassword: true })
-              setChangePasswordObj({
-                user_pw: '',
-                id: row?.id
-              })
-            }}>
-              <Icon icon='material-symbols:lock-outline' />
-            </IconButton>
-          </>
-        )
       }
     },
     {

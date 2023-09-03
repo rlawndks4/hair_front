@@ -8,54 +8,45 @@ import { toast } from "react-hot-toast";
 import { useModal } from "src/components/dialog/ModalProvider";
 import ManagerLayout from "src/layouts/manager/ManagerLayout";
 import { apiManager } from "src/utils/api-manager";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import _ from "lodash";
+import { post_category_list } from "src/data/data";
 const PostList = () => {
   const { setModal } = useModal()
   const defaultColumns = [
     {
-      id: 'profile_img',
-      label: '유저프로필',
+      id: 'type',
+      label: '카테고리',
       action: (row) => {
-        return <Avatar src={row['profile_img'] ?? "---"} />
+        return post_category_list[row['type']]
       }
     },
     {
-      id: 'nick_name',
-      label: '닉네임',
+      id: 'post_img',
+      label: '메인이미지',
       action: (row) => {
-        return row['nick_name'] ?? "---"
+        return <LazyLoadImage src={row['post_img']} style={{ height: '56px' }} />
       }
     },
     {
-      id: 'phone_num',
-      label: '휴대폰번호',
+      id: 'title',
+      label: '제목',
       action: (row) => {
-        return row['phone_num'] ?? "---"
+        return row['title'] ?? "---"
+      }
+    },
+    {
+      id: 'user_name',
+      label: '작성자아이디',
+      action: (row) => {
+        return row['user_name'] ?? "---"
       }
     },
     {
       id: 'created_at',
-      label: '가입일',
+      label: '생성일',
       action: (row) => {
         return row['created_at'] ?? "---"
-      }
-    },
-    {
-      id: 'edit_password',
-      label: '비밀번호 변경',
-      action: (row) => {
-        return (
-          <>
-            <IconButton onClick={() => {
-              setDialogObj({ ...dialogObj, changePassword: true })
-              setChangePasswordObj({
-                user_pw: '',
-                id: row?.id
-              })
-            }}>
-              <Icon icon='material-symbols:lock-outline' />
-            </IconButton>
-          </>
-        )
       }
     },
     {
@@ -125,55 +116,10 @@ const PostList = () => {
       onChangePage(searchObj);
     }
   }
-  const onChangeUserPassword = async () => {
-    let result = await changePasswordUserByManager(changePasswordObj);
-    if (result) {
-      setDialogObj({
-        ...dialogObj,
-        changePassword: false
-      })
-      toast.success("성공적으로 변경 되었습니다.");
-    }
-  }
+ 
   return (
     <>
-      <Dialog
-        open={dialogObj.changePassword}
-      >
-        <DialogTitle>{`비밀번호 변경`}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            새 비밀번호를 입력 후 확인을 눌러주세요.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            fullWidth
-            value={changePasswordObj.user_pw}
-            type="password"
-            margin="dense"
-            label="새 비밀번호"
-            onChange={(e) => {
-              setChangePasswordObj({
-                ...changePasswordObj,
-                user_pw: e.target.value
-              })
-            }}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" onClick={onChangeUserPassword}>
-            변경
-          </Button>
-          <Button color="inherit" onClick={() => {
-            setDialogObj({
-              ...dialogObj,
-              changePassword: false
-            })
-          }}>
-            취소
-          </Button>
-        </DialogActions>
-      </Dialog>
+      
       <Stack spacing={3}>
         <Card>
           <ManagerTable
