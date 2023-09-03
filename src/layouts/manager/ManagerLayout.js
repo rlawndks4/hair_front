@@ -14,6 +14,7 @@ import Header from './header';
 import NavMini from './nav/NavMini';
 import NavVertical from './nav/NavVertical';
 import NavHorizontal from './nav/NavHorizontal';
+import { useAuthContext } from 'src/auth/useAuthContext';
 
 // ----------------------------------------------------------------------
 
@@ -22,6 +23,7 @@ ManagerLayout.propTypes = {
 };
 
 export default function ManagerLayout({ children }) {
+  const { user } = useAuthContext();
   const { themeLayout, themeDnsData } = useSettingsContext();
 
   const isDesktop = useResponsive('up', 'lg');
@@ -39,11 +41,11 @@ export default function ManagerLayout({ children }) {
   const handleClose = () => {
     setOpen(false);
   };
-  useEffect(()=>{
-    if(themeDnsData?.id){
+  useEffect(() => {
+    if (themeDnsData?.id && user?.level >= 10) {
       setIsShowPage(true);
     }
-  },[themeDnsData])
+  }, [themeDnsData])
   const renderNavVertical = <NavVertical openNav={open} onCloseNav={handleClose} />;
   if (!isShowPage) {
     return (
