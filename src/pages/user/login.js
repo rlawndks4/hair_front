@@ -93,6 +93,7 @@ const Login = () => {
     const { themeDnsData } = useSettingsContext();
     const router = useRouter();
 
+
     const [loading, setLoading] = useState(true);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -101,7 +102,6 @@ const Login = () => {
         if (user?.level >= 0) {
             router.push('/user/home');
         }
-        setLoading(false);
     }, [user])
     const LoginSchema = Yup.object().shape({
         email: Yup.string().required('Email is required').email('Email must be a valid email address'),
@@ -130,102 +130,103 @@ const Login = () => {
         setTourOpen(false);
         setTourSteps([]);
     };
-    if (!themeDnsData?.id) {
-        return (
-            <>
-            </>
-        )
-    }
+    useEffect(() => {
+        if (themeDnsData?.id > 0) {
+            setLoading(false);
+        }
+    }, [themeDnsData])
     return (
         <>
-
-            <Row style={{ height: '100vh' }}>
-                <StyledContent style={{ margin: 'auto', zIndex: '20' }}>
-                    <Stack sx={{ width: 1 }}>
-                        <img src={logoSrc()} style={{ maxWidth: '200px', margin: '1rem auto' }} />
-                        <Stack spacing={3}>
-                            <TextField
-                                name="username"
-                                label="아이디를 입력해 주세요."
-                                autoComplete='new-password'
-                                onChange={(e) => {
-                                    setUsername(e.target.value)
-                                }}
-                                onKeyPress={(e) => {
-                                    if (e.key == 'Enter') {
-                                        $('#id').focus();
-                                    }
+            {!loading &&
+                <>
+                    <Row style={{ height: '100vh' }}>
+                        <StyledContent style={{ margin: 'auto', zIndex: '20' }}>
+                            <Stack sx={{ width: 1 }}>
+                                <img src={logoSrc()} style={{ maxWidth: '200px', margin: '1rem auto' }} />
+                                <Stack spacing={3}>
+                                    <TextField
+                                        name="username"
+                                        label="아이디를 입력해 주세요."
+                                        autoComplete='new-password'
+                                        onChange={(e) => {
+                                            setUsername(e.target.value)
+                                        }}
+                                        onKeyPress={(e) => {
+                                            if (e.key == 'Enter') {
+                                                $('#id').focus();
+                                            }
+                                        }}
+                                    />
+                                    <TextField
+                                        name="password"
+                                        id="password"
+                                        label="패스워드를 입력해 주세요."
+                                        type={showPassword ? 'text' : 'password'}
+                                        autoComplete='new-password'
+                                        onKeyPress={(e) => {
+                                            if (e.key == 'Enter') {
+                                                onSubmit();
+                                            }
+                                        }}
+                                        onChange={(e) => {
+                                            setPassword(e.target.value)
+                                        }}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                                                        <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />
+                                </Stack>
+                                <Button
+                                    fullWidth
+                                    size="large"
+                                    type="submit"
+                                    variant="contained"
+                                    sx={{
+                                        marginTop: '24px'
+                                    }}
+                                    onClick={onSubmit}
+                                >
+                                    로그인
+                                </Button>
+                            </Stack>
+                        </StyledContent>
+                    </Row>
+                    <WaveContainer>
+                        <WaveContent1>
+                            <Wave
+                                backgroundSize='50% 160px'
+                                style={{
+                                    backgroundImage: `url('/wave/1.svg')`,
+                                    animation: 'move_wave 8s linear infinite'
                                 }}
                             />
-                            <TextField
-                                name="password"
-                                id="password"
-                                label="패스워드를 입력해 주세요."
-                                type={showPassword ? 'text' : 'password'}
-                                autoComplete='new-password'
-                                onKeyPress={(e) => {
-                                    if (e.key == 'Enter') {
-                                        onSubmit();
-                                    }
-                                }}
-                                onChange={(e) => {
-                                    setPassword(e.target.value)
-                                }}
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                                                <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
+                        </WaveContent1>
+                        <WaveContent2>
+                            <Wave
+                                backgroundSize='50% 140px'
+                                style={{
+                                    backgroundImage: `url('/wave/2.svg')`,
+                                    animation: 'move_wave 10s linear infinite'
                                 }}
                             />
-                        </Stack>
-                        <Button
-                            fullWidth
-                            size="large"
-                            type="submit"
-                            variant="contained"
-                            sx={{
-                                marginTop: '24px'
-                            }}
-                            onClick={onSubmit}
-                        >
-                            로그인
-                        </Button>
-                    </Stack>
-                </StyledContent>
-            </Row>
-            <WaveContainer>
-                <WaveContent1>
-                    <Wave
-                        backgroundSize='50% 160px'
-                        style={{
-                            backgroundImage: `url('/wave/1.svg')`,
-                            animation: 'move_wave 8s linear infinite'
-                        }}
-                    />
-                </WaveContent1>
-                <WaveContent2>
-                    <Wave
-                        backgroundSize='50% 140px'
-                        style={{
-                            backgroundImage: `url('/wave/2.svg')`,
-                            animation: 'move_wave 10s linear infinite'
-                        }}
-                    />
-                </WaveContent2>
-                <WaveContent3>
-                    <Wave
-                        backgroundSize='50% 150px'
-                        style={{
-                            backgroundImage: `url('/wave/3.svg')`,
-                            animation: 'move_wave 15s linear infinite'
-                        }}
-                    />
-                </WaveContent3>
-            </WaveContainer>
+                        </WaveContent2>
+                        <WaveContent3>
+                            <Wave
+                                backgroundSize='50% 150px'
+                                style={{
+                                    backgroundImage: `url('/wave/3.svg')`,
+                                    animation: 'move_wave 15s linear infinite'
+                                }}
+                            />
+                        </WaveContent3>
+                    </WaveContainer>
+                </>}
         </>
     );
 }
