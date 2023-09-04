@@ -6,7 +6,7 @@ import { themeObj } from "src/components/elements/styled-components";
 import { useSettingsContext } from "src/components/settings";
 import { Upload } from "src/components/upload";
 import ManagerLayout from "src/layouts/manager/ManagerLayout";
-import { base64toFile, getAllIdsWithParents } from "src/utils/function";
+import { base64toFile, getAllIdsWithParents, returnMoment } from "src/utils/function";
 import styled from "styled-components";
 import { react_quill_data } from "src/data/manager-data";
 import { axiosIns } from "src/utils/axios";
@@ -37,8 +37,8 @@ const ReservationEdit = () => {
     user_name: '',
     note: '',
     shop_id: undefined,
-    date: '',
-    time: ''
+    date: returnMoment(false, new Date()).slice(0, 10),
+    time: '00:00'
   })
 
   useEffect(() => {

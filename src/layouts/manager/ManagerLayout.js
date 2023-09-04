@@ -45,7 +45,7 @@ export default function ManagerLayout({ children }) {
     if (themeDnsData?.id && user?.level >= 10) {
       setIsShowPage(true);
     }
-  }, [themeDnsData])
+  }, [themeDnsData, user])
   const renderNavVertical = <NavVertical openNav={open} onCloseNav={handleClose} />;
   if (!isShowPage) {
     return (

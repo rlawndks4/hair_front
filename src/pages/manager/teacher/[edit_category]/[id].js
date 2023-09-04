@@ -176,7 +176,7 @@ const TeacherEdit = () => {
                   <Stack spacing={1}>
                     <TextField
                       fullWidth
-                      label="고객메모"
+                      label="메모"
                       multiline
                       rows={4}
                       value={item.note}
