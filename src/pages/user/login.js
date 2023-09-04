@@ -17,10 +17,74 @@ import Image from 'src/components/image/Image';
 import dynamic from 'next/dynamic';
 import { PATH_MANAGER } from 'src/routes/paths';
 import { Row } from 'src/components/elements/styled-components';
+import styled from 'styled-components';
 const Tour = dynamic(
     () => import('reactour'),
     { ssr: false },
 );
+const WaveContainer = styled.div`
+position: absolute;
+width: 100%;
+height: 50vh;
+bottom: 0;
+left: 0;
+z-index: 0;
+overflow: hidden;
+`
+const WaveContent1 = styled.div`
+z-index: 5;
+opacity: .6;
+position: absolute;
+width: 100%;
+overflow: hidden;
+height: 100%;
+bottom: -1px;
+`
+const WaveContent2 = styled.div`
+z-index: 15;
+opacity: .75;
+position: absolute;
+width: 100%;
+overflow: hidden;
+height: 100%;
+bottom: -1px;
+`
+const WaveContent3 = styled.div`
+z-index: 10;
+opacity: .5;
+position: absolute;
+width: 100%;
+overflow: hidden;
+height: 100%;
+bottom: -1px;
+`
+const Wave = styled.div`
+background-size: 50% 160px;
+-webkit-animation: move_wave 8s linear infinite;
+animation: move_wave 8s linear infinite;
+position: absolute;
+left: 0;
+width: 200%;
+height: 100%;
+background-repeat: repeat-x;
+background-position: 0 bottom;
+-webkit-transform-origin: center bottom;
+transform-origin: center bottom;
+@keyframes move_wave {
+    0% {
+        -webkit-transform: translateX(0) translateZ(0) scaleY(1);
+        transform: translateX(0) translateZ(0) scaleY(1);
+    }
+    50% {
+        -webkit-transform: translateX(-25%) translateZ(0) scaleY(.45);
+        transform: translateX(-25%) translateZ(0) scaleY(.45);
+    }
+    100% {
+        -webkit-transform: translateX(-50%) translateZ(0) scaleY(1);
+        transform: translateX(-50%) translateZ(0) scaleY(1);
+    }
+  } 
+`
 const Login = () => {
     const { login, user } = useAuthContext();
     const { themeDnsData } = useSettingsContext();
@@ -65,8 +129,8 @@ const Login = () => {
     };
     return (
         <>
-            <Row style={{height:'100vh'}}>
-                <StyledContent style={{ margin: 'auto' }}>
+            <Row style={{ height: '100vh' }}>
+                <StyledContent style={{ margin: 'auto', zIndex: '20' }}>
                     <Stack sx={{ width: 1 }}>
                         <img src={logoSrc()} style={{ maxWidth: '200px', margin: '1rem auto' }} />
                         <Stack spacing={3}>
@@ -123,6 +187,35 @@ const Login = () => {
                     </Stack>
                 </StyledContent>
             </Row>
+            <WaveContainer>
+                <WaveContent1>
+                    <Wave
+                        style={{
+                            backgroundImage: `url('/wave/1.svg')`,
+                            backgroundSize: '50% 160px',
+                            animation: 'move_wave 8s linear infinite'
+                        }}
+                    />
+                </WaveContent1>
+                <WaveContent2>
+                    <Wave
+                        style={{
+                            backgroundImage: `url('/wave/2.svg')`,
+                            backgroundSize: '50% 140px',
+                            animation: 'move_wave 10s linear infinite'
+                        }}
+                    />
+                </WaveContent2>
+                <WaveContent3>
+                    <Wave
+                        style={{
+                            backgroundImage: `url('/wave/3.svg')`,
+                            backgroundSize: '50% 150px',
+                            animation: 'move_wave 15s linear infinite'
+                        }}
+                    />
+                </WaveContent3>
+            </WaveContainer>
         </>
     );
 }
