@@ -5,6 +5,7 @@ import axios from 'src/utils/axios';
 import localStorageAvailable from '../utils/localStorageAvailable';
 //
 import { isValidToken } from './utils';
+import { useRouter } from 'next/router';
 
 // ----------------------------------------------------------------------
 
@@ -64,6 +65,8 @@ AuthProvider.propTypes = {
 };
 
 export function AuthProvider({ children }) {
+
+  const router = useRouter();
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const storageAvailable = localStorageAvailable();
@@ -106,7 +109,7 @@ export function AuthProvider({ children }) {
 
   // LOGIN
   const login = useCallback(async (user_name, user_pw) => {
-    const { data: response } = await axios.post('/api/auth/sign-in', {
+    const { data: response } = await axios.post(`/api/${router.asPath.split('/')[1] == 'manager' ? 'manager/' : ''}auth/sign-in`, {
       user_name,
       user_pw,
     });
