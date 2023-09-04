@@ -1,3 +1,4 @@
+import UserLayout from "src/layouts/user/UserLayout";
 
 const PostList = () =>{
     return (
@@ -6,4 +7,5 @@ const PostList = () =>{
         </>
     )
 }
+PostList.getLayout = (page) => <UserLayout>{page}</UserLayout>;
 export default PostList;

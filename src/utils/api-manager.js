@@ -85,13 +85,15 @@ export const get = async (url, params) => {
 }
 export const apiManager = (table, type, params) => {
     let obj = settingParams(table, type, params);
+    let pathname = window.location.pathname;
+
     if (!(obj?.brand_id > 0)) {
         let dns_data = getLocalStorage('themeDnsData');
         dns_data = JSON.parse(dns_data);
         obj['brand_id'] = dns_data?.id;
     }
 
-    let base_url = '/api/manager';
+    let base_url = `/api${pathname.split('/')[1] == 'manager' ? '/manager' : ''}`;
     if (type == 'get') {
         return get(`${base_url}/${table}/${params?.id}`);
     }

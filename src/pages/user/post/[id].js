@@ -1,12 +1,12 @@
 import UserLayout from "src/layouts/user/UserLayout";
 
 
-const MyPage = () =>{
+const Post = () =>{
     return (
         <>
         
         </>
     )
 }
-MyPage.getLayout = (page) => <UserLayout>{page}</UserLayout>;
-export default MyPage;
+Post.getLayout = (page) => <UserLayout>{page}</UserLayout>;
+export default Post;

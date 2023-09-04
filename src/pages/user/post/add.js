@@ -1,3 +1,4 @@
+import UserLayout from "src/layouts/user/UserLayout";
 
 const PostAdd = () => {
     return (
@@ -6,4 +7,5 @@ const PostAdd = () => {
         </>
     )
 }
+PostAdd.getLayout = (page) => <UserLayout>{page}</UserLayout>;
 export default PostAdd;

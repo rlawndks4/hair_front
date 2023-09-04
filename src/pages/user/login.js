@@ -1,4 +1,4 @@
-import { Stack, TextField, InputAdornment, IconButton, Card, CardContent, Link, Typography, Button } from '@mui/material';
+import { Stack, TextField, InputAdornment, IconButton, Card, CardContent, Link, Typography, Button, Box } from '@mui/material';
 import LoginLayout from 'src/layouts/login/LoginLayout';
 import { useAuthContext } from 'src/auth/useAuthContext';
 import { useEffect, useState } from 'react';
@@ -18,10 +18,16 @@ import dynamic from 'next/dynamic';
 import { PATH_MANAGER } from 'src/routes/paths';
 import { Row } from 'src/components/elements/styled-components';
 import styled from 'styled-components';
+import { styled as muiStyled } from '@mui/material/styles'
 const Tour = dynamic(
     () => import('reactour'),
     { ssr: false },
 );
+const LinkStyled = muiStyled(Link)(({ theme }) => ({
+    fontSize: '0.875rem',
+    textDecoration: 'none',
+    color: theme.palette.primary.main
+}))
 const WaveContainer = styled.div`
 position: absolute;
 width: 100%;
@@ -194,6 +200,14 @@ const Login = () => {
                                 >
                                     로그인
                                 </Button>
+                                <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', marginTop: '1rem' }}>
+                                    <Typography sx={{ color: 'text.secondary', mr: 2 }}>처음 방문하셨나요?</Typography>
+                                    <Typography>
+                                        <LinkStyled href={`/user/sign-up`} sx={{ fontSize: '1rem' }}>
+                                            회원가입하기
+                                        </LinkStyled>
+                                    </Typography>
+                                </Box>
                             </Stack>
                         </StyledContent>
                     </Row>
