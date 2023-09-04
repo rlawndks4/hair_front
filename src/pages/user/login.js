@@ -59,7 +59,7 @@ height: 100%;
 bottom: -1px;
 `
 const Wave = styled.div`
-background-size: 50% 160px;
+background-size: ${props => props.backgroundSize};
 -webkit-animation: move_wave 8s linear infinite;
 animation: move_wave 8s linear infinite;
 position: absolute;
@@ -84,6 +84,9 @@ transform-origin: center bottom;
         transform: translateX(-50%) translateZ(0) scaleY(1);
     }
   } 
+  @media (max-width: 600px) {
+    background-size: 50% 100px;
+  }
 `
 const Login = () => {
     const { login, user } = useAuthContext();
@@ -127,8 +130,15 @@ const Login = () => {
         setTourOpen(false);
         setTourSteps([]);
     };
+    if (!themeDnsData?.id) {
+        return (
+            <>
+            </>
+        )
+    }
     return (
         <>
+
             <Row style={{ height: '100vh' }}>
                 <StyledContent style={{ margin: 'auto', zIndex: '20' }}>
                     <Stack sx={{ width: 1 }}>
@@ -190,27 +200,27 @@ const Login = () => {
             <WaveContainer>
                 <WaveContent1>
                     <Wave
+                        backgroundSize='50% 160px'
                         style={{
                             backgroundImage: `url('/wave/1.svg')`,
-                            backgroundSize: '50% 160px',
                             animation: 'move_wave 8s linear infinite'
                         }}
                     />
                 </WaveContent1>
                 <WaveContent2>
                     <Wave
+                        backgroundSize='50% 140px'
                         style={{
                             backgroundImage: `url('/wave/2.svg')`,
-                            backgroundSize: '50% 140px',
                             animation: 'move_wave 10s linear infinite'
                         }}
                     />
                 </WaveContent2>
                 <WaveContent3>
                     <Wave
+                        backgroundSize='50% 150px'
                         style={{
                             backgroundImage: `url('/wave/3.svg')`,
-                            backgroundSize: '50% 150px',
                             animation: 'move_wave 15s linear infinite'
                         }}
                     />
