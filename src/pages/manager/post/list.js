@@ -29,6 +29,13 @@ const PostList = () => {
       }
     },
     {
+      id: 'shop_name',
+      label: '미용실명',
+      action: (row) => {
+        return row['shop_name'] ?? "---"
+      }
+    },
+    {
       id: 'title',
       label: '제목',
       action: (row) => {

@@ -13,6 +13,7 @@ import { Icon } from '@iconify/react';
 import { useSettingsContext } from 'src/components/settings';
 import { useRouter } from 'next/router';
 import { apiManager } from 'src/utils/api-manager';
+import { useEffect } from 'react';
 
 const Wrappers = styled.div`
 max-width:1000px;
@@ -106,6 +107,7 @@ const SignUp = (props) => {
     const router = useRouter();
     const { themeDnsData } = useSettingsContext();
     const theme = useTheme();
+    const [loading, setLoading] = useState(true);
     const [activeStep, setActiveStep] = useState(0);
     const [checkboxObj, setCheckboxObj] = useState({
         check_0: false,
@@ -175,189 +177,196 @@ const SignUp = (props) => {
         setActiveStep(activeStep + 1);
         window.scrollTo(0, 0)
     }
-
+    useEffect(() => {
+        if (themeDnsData?.id > 0) {
+            setLoading(false);
+        }
+    }, [themeDnsData])
     return (
         <>
-            <Wrappers>
-                <Title>회원가입</Title>
-                <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
-                    {STEPS.map((label) => (
-                        <Step key={label}>
-                            <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
-                        </Step>
-                    ))}
-                </Stepper>
-                <div style={{ marginTop: '2rem' }} />
-                {activeStep == 0 &&
-                    <>
-                        <FormControlLabel label={<Typography style={{ fontWeight: 'bold', fontSize: themeObj.font_size.size5 }}> 이용약관 및 개인정보수집 및 이용, 쇼핑정보 수신(선택)에 모두 동의합니다.</Typography>} control={<Checkbox checked={checkboxObj.check_0} />} onChange={(e) => {
-                            let check_obj = {}
-                            if (e.target.checked) {
-                                for (let key in checkboxObj) {
-                                    check_obj[key] = true;
-                                }
-                            } else {
-                                for (let key in checkboxObj) {
-                                    check_obj[key] = false;
-                                }
-                            }
-                            setCheckboxObj(check_obj)
-                        }} />
-                        <div style={{ marginTop: '1rem' }} />
-                        <Divider />
-                        <div style={{ marginTop: '1rem' }} />
-                        <FormControlLabel label={<Typography style={{ fontSize: themeObj.font_size.size6 }}>이용약관 동의 (필수)</Typography>} control={<Checkbox checked={checkboxObj.check_1} onChange={(e) => {
-                            setCheckboxObj({ ...checkboxObj, ['check_1']: e.target.checked })
-                        }} />} />
-                        <div style={{ marginTop: '0.5rem' }} />
-                        <div style={{
-                            height: '10rem',
-                            overflowY: 'auto',
-                            border: `1px solid ${themeObj.grey[300]}`
-                        }}>
-                            <Policy type={0} />
-                        </div>
-                        <div style={{ marginTop: '1rem' }} />
-                        <FormControlLabel label={<Typography style={{ fontSize: themeObj.font_size.size6 }}>개인정보 수집 및 이용 동의 (필수)</Typography>} control={<Checkbox checked={checkboxObj.check_2} onChange={(e) => {
-                            setCheckboxObj({ ...checkboxObj, ['check_2']: e.target.checked })
-                        }} />} />
-                        <div style={{ marginTop: '0.5rem' }} />
-                        <div style={{
-                            height: '10rem',
-                            overflowY: 'auto',
-                            border: `1px solid ${themeObj.grey[300]}`
-                        }}>
-                            <Policy type={1} />
-                        </div>
-                        <div style={{ marginTop: '1rem' }} />
-                        <FormControlLabel label={<Typography style={{ fontSize: themeObj.font_size.size6 }}>쇼핑정보 수신 동의 (선택)</Typography>} control={<Checkbox checked={checkboxObj.check_3} onChange={(e) => {
-                            setCheckboxObj({ ...checkboxObj, ['check_3']: e.target.checked })
-                        }} />} />
-                        <div style={{ marginTop: '1rem' }} />
-                        <Divider />
-                        <div style={{ marginTop: '1rem' }} />
-                        <Row>
-                            <FormControlLabel label={<Typography style={{ fontSize: themeObj.font_size.size7 }}>SMS 수신 동의 (선택)</Typography>} control={<Checkbox checked={checkboxObj.check_4} onChange={(e) => {
-                                setCheckboxObj({ ...checkboxObj, ['check_4']: e.target.checked })
-                            }} />} />
-                            <FormControlLabel label={<Typography style={{ fontSize: themeObj.font_size.size7 }}>이메일 수신 동의 (선택)</Typography>} control={<Checkbox checked={checkboxObj.check_5} onChange={(e) => {
-                                setCheckboxObj({ ...checkboxObj, ['check_5']: e.target.checked })
-                            }} />} />
+            {!loading &&
+                <>
+                    <Wrappers>
+                        <Title>회원가입</Title>
+                        <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
+                            {STEPS.map((label) => (
+                                <Step key={label}>
+                                    <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+                                </Step>
+                            ))}
+                        </Stepper>
+                        <div style={{ marginTop: '2rem' }} />
+                        {activeStep == 0 &&
+                            <>
+                                <FormControlLabel label={<Typography style={{ fontWeight: 'bold', fontSize: themeObj.font_size.size5 }}> 이용약관 및 개인정보수집 및 이용, 쇼핑정보 수신(선택)에 모두 동의합니다.</Typography>} control={<Checkbox checked={checkboxObj.check_0} />} onChange={(e) => {
+                                    let check_obj = {}
+                                    if (e.target.checked) {
+                                        for (let key in checkboxObj) {
+                                            check_obj[key] = true;
+                                        }
+                                    } else {
+                                        for (let key in checkboxObj) {
+                                            check_obj[key] = false;
+                                        }
+                                    }
+                                    setCheckboxObj(check_obj)
+                                }} />
+                                <div style={{ marginTop: '1rem' }} />
+                                <Divider />
+                                <div style={{ marginTop: '1rem' }} />
+                                <FormControlLabel label={<Typography style={{ fontSize: themeObj.font_size.size6 }}>이용약관 동의 (필수)</Typography>} control={<Checkbox checked={checkboxObj.check_1} onChange={(e) => {
+                                    setCheckboxObj({ ...checkboxObj, ['check_1']: e.target.checked })
+                                }} />} />
+                                <div style={{ marginTop: '0.5rem' }} />
+                                <div style={{
+                                    height: '10rem',
+                                    overflowY: 'auto',
+                                    border: `1px solid ${themeObj.grey[300]}`
+                                }}>
+                                    <Policy type={0} />
+                                </div>
+                                <div style={{ marginTop: '1rem' }} />
+                                <FormControlLabel label={<Typography style={{ fontSize: themeObj.font_size.size6 }}>개인정보 수집 및 이용 동의 (필수)</Typography>} control={<Checkbox checked={checkboxObj.check_2} onChange={(e) => {
+                                    setCheckboxObj({ ...checkboxObj, ['check_2']: e.target.checked })
+                                }} />} />
+                                <div style={{ marginTop: '0.5rem' }} />
+                                <div style={{
+                                    height: '10rem',
+                                    overflowY: 'auto',
+                                    border: `1px solid ${themeObj.grey[300]}`
+                                }}>
+                                    <Policy type={1} />
+                                </div>
+                                <div style={{ marginTop: '1rem' }} />
+                                <FormControlLabel label={<Typography style={{ fontSize: themeObj.font_size.size6 }}>쇼핑정보 수신 동의 (선택)</Typography>} control={<Checkbox checked={checkboxObj.check_3} onChange={(e) => {
+                                    setCheckboxObj({ ...checkboxObj, ['check_3']: e.target.checked })
+                                }} />} />
+                                <div style={{ marginTop: '1rem' }} />
+                                <Divider />
+                                <div style={{ marginTop: '1rem' }} />
+                                <Row>
+                                    <FormControlLabel label={<Typography style={{ fontSize: themeObj.font_size.size7 }}>SMS 수신 동의 (선택)</Typography>} control={<Checkbox checked={checkboxObj.check_4} onChange={(e) => {
+                                        setCheckboxObj({ ...checkboxObj, ['check_4']: e.target.checked })
+                                    }} />} />
+                                    <FormControlLabel label={<Typography style={{ fontSize: themeObj.font_size.size7 }}>이메일 수신 동의 (선택)</Typography>} control={<Checkbox checked={checkboxObj.check_5} onChange={(e) => {
+                                        setCheckboxObj({ ...checkboxObj, ['check_5']: e.target.checked })
+                                    }} />} />
+                                </Row>
+                                <div style={{ marginTop: '0.5rem' }} />
+                                <div style={{
+                                    height: '10rem',
+                                    overflowY: 'auto',
+                                    border: `1px solid ${themeObj.grey[300]}`,
+                                    padding: '2rem',
+                                    fontSize: themeObj.font_size.size7
+                                }}>
+                                    할인쿠폰 및 혜택, 이벤트, 신상품 소식 등 쇼핑몰에서 제공하는 유익한 쇼핑정보를 SMS나 이메일로 받아보실 수 있습니다. 단, 주문/거래 정보 및 주요 정책과 관련된 내용은 수신동의 여부와 관계없이 발송됩니다.
+                                    선택 약관에 동의하지 않으셔도 회원가입은 가능하며, 회원가입 후 회원정보수정 페이지에서 언제든지 수신여부를 변경하실 수 있습니다.
+                                </div>
+                            </>}
+                        {activeStep == 1 &&
+                            <>
+                                <TextField
+                                    label='아이디'
+                                    onChange={(e) => {
+                                        setUser({ ...user, ['user_name']: e.target.value })
+                                    }}
+                                    value={user.user_name}
+                                    style={inputStyle}
+                                    autoComplete='new-password'
+                                    onKeyPress={(e) => {
+                                        if (e.key == 'Enter') {
+                                        }
+                                    }}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <Icon icon="eva:person-fill" width={24} />
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                                <TextField
+                                    label='비밀번호'
+                                    onChange={(e) => {
+                                        setUser({ ...user, ['user_pw']: e.target.value })
+                                    }}
+                                    type='password'
+                                    value={user.user_pw}
+                                    style={inputStyle}
+                                    autoComplete='new-password'
+                                    onKeyPress={(e) => {
+                                        if (e.key == 'Enter') {
+                                        }
+                                    }}
+                                />
+                                <TextField
+                                    label='비밀번호 확인'
+                                    onChange={(e) => {
+                                        setUser({ ...user, ['passwordCheck']: e.target.value })
+                                    }}
+                                    type='password'
+                                    value={user.passwordCheck}
+                                    style={inputStyle}
+                                    autoComplete='new-password'
+                                    onKeyPress={(e) => {
+                                        if (e.key == 'Enter') {
+                                        }
+                                    }}
+                                />
+                                <TextField
+                                    label='닉네임'
+                                    onChange={(e) => {
+                                        setUser({ ...user, ['nickname']: e.target.value })
+                                    }}
+                                    value={user.nickname}
+                                    style={inputStyle}
+                                    autoComplete='new-password'
+                                    onKeyPress={(e) => {
+                                        if (e.key == 'Enter') {
+                                        }
+                                    }}
+                                />
+                                <TextField
+                                    label='휴대폰번호'
+                                    placeholder="하이픈(-) 제외 입력"
+                                    onChange={(e) => {
+                                        setUser({ ...user, ['phone_num']: e.target.value })
+                                    }}
+                                    value={user.phone_num}
+                                    style={inputStyle}
+                                    autoComplete='new-password'
+                                    onKeyPress={(e) => {
+                                        if (e.key == 'Enter') {
+                                        }
+                                    }}
+                                />
+                            </>}
+                        {activeStep == 2 &&
+                            <>
+                                <Col>
+                                    <Icon icon={'fluent-mdl2:completed'} style={{ margin: '8rem auto 1rem auto', fontSize: themeObj.font_size.size1, color: theme.palette.primary.main }} />
+                                    <div style={{ margin: 'auto auto 8rem auto' }}>회원가입이 완료되었습니다.</div>
+                                </Col>
+                            </>}
+                        <Row style={{ width: '100%', justifyContent: 'space-between' }}>
+                            <Button variant="outlined" style={{
+                                height: '56px',
+                                marginTop: '1rem',
+                                width: '49%'
+                            }}
+                                onClick={onClickPrevButton}
+                            >이전</Button>
+                            <Button variant="contained" style={{
+                                height: '56px',
+                                marginTop: '1rem',
+                                width: '49%'
+                            }}
+                                onClick={onClickNextButton}
+                            >{activeStep == 2 ? '완료' : '다음'}</Button>
                         </Row>
-                        <div style={{ marginTop: '0.5rem' }} />
-                        <div style={{
-                            height: '10rem',
-                            overflowY: 'auto',
-                            border: `1px solid ${themeObj.grey[300]}`,
-                            padding: '2rem',
-                            fontSize: themeObj.font_size.size7
-                        }}>
-                            할인쿠폰 및 혜택, 이벤트, 신상품 소식 등 쇼핑몰에서 제공하는 유익한 쇼핑정보를 SMS나 이메일로 받아보실 수 있습니다. 단, 주문/거래 정보 및 주요 정책과 관련된 내용은 수신동의 여부와 관계없이 발송됩니다.
-                            선택 약관에 동의하지 않으셔도 회원가입은 가능하며, 회원가입 후 회원정보수정 페이지에서 언제든지 수신여부를 변경하실 수 있습니다.
-                        </div>
-                    </>}
-                {activeStep == 1 &&
-                    <>
-                        <TextField
-                            label='아이디'
-                            onChange={(e) => {
-                                setUser({ ...user, ['user_name']: e.target.value })
-                            }}
-                            value={user.user_name}
-                            style={inputStyle}
-                            autoComplete='new-password'
-                            onKeyPress={(e) => {
-                                if (e.key == 'Enter') {
-                                }
-                            }}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <Icon icon="eva:person-fill" width={24} />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                        <TextField
-                            label='비밀번호'
-                            onChange={(e) => {
-                                setUser({ ...user, ['user_pw']: e.target.value })
-                            }}
-                            type='password'
-                            value={user.user_pw}
-                            style={inputStyle}
-                            autoComplete='new-password'
-                            onKeyPress={(e) => {
-                                if (e.key == 'Enter') {
-                                }
-                            }}
-                        />
-                        <TextField
-                            label='비밀번호 확인'
-                            onChange={(e) => {
-                                setUser({ ...user, ['passwordCheck']: e.target.value })
-                            }}
-                            type='password'
-                            value={user.passwordCheck}
-                            style={inputStyle}
-                            autoComplete='new-password'
-                            onKeyPress={(e) => {
-                                if (e.key == 'Enter') {
-                                }
-                            }}
-                        />
-                        <TextField
-                            label='닉네임'
-                            onChange={(e) => {
-                                setUser({ ...user, ['nickname']: e.target.value })
-                            }}
-                            value={user.nickname}
-                            style={inputStyle}
-                            autoComplete='new-password'
-                            onKeyPress={(e) => {
-                                if (e.key == 'Enter') {
-                                }
-                            }}
-                        />
-                        <TextField
-                            label='휴대폰번호'
-                            placeholder="하이픈(-) 제외 입력"
-                            onChange={(e) => {
-                                setUser({ ...user, ['phone_num']: e.target.value })
-                            }}
-                            value={user.phone_num}
-                            style={inputStyle}
-                            autoComplete='new-password'
-                            onKeyPress={(e) => {
-                                if (e.key == 'Enter') {
-                                }
-                            }}
-                        />
-                    </>}
-                {activeStep == 2 &&
-                    <>
-                        <Col>
-                            <Icon icon={'fluent-mdl2:completed'} style={{ margin: '8rem auto 1rem auto', fontSize: themeObj.font_size.size1, color: theme.palette.primary.main }} />
-                            <div style={{ margin: 'auto auto 8rem auto' }}>회원가입이 완료되었습니다.</div>
-                        </Col>
-                    </>}
-                <Row style={{ width: '100%', justifyContent: 'space-between' }}>
-                    <Button variant="outlined" style={{
-                        height: '56px',
-                        marginTop: '1rem',
-                        width: '49%'
-                    }}
-                        onClick={onClickPrevButton}
-                    >이전</Button>
-                    <Button variant="contained" style={{
-                        height: '56px',
-                        marginTop: '1rem',
-                        width: '49%'
-                    }}
-                        onClick={onClickNextButton}
-                    >{activeStep == 2 ? '완료' : '다음'}</Button>
-                </Row>
-            </Wrappers>
+                    </Wrappers>
+                </>}
         </>
     )
 }

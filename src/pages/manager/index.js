@@ -9,7 +9,7 @@ export default function Index() {
   const router = useRouter();
 
   useEffect(() => {
-    if (user) {
+    if (user?.level >= 10) {
       router.push('/manager/user');
     } else {
       router.push('/manager/login')
