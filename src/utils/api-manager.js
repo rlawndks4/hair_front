@@ -5,6 +5,7 @@ import { getLocalStorage } from "./local-storage";
 
 export const post = async (url, obj) => {
     try {
+        console.log(obj)
         let formData = new FormData();
         let form_data_options = {
             indices: true,

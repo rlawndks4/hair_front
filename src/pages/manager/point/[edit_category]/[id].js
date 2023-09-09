@@ -39,7 +39,6 @@ const PointEdit = () => {
       let data = await apiManager('points', 'get', {
         id: router.query.id
       })
-      console.log(data)
       setItem(data);
     }
     setLoading(false);

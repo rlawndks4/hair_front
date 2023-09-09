@@ -121,9 +121,7 @@ export function SettingsProvider({ children }) {
       console.log(err)
     }
   }
-  useEffect(()=>{
-    console.log(themeColorPresets)
-  },[themeColorPresets])
+
   // Mode
   const onToggleMode = useCallback(() => {
     const value = themeMode === 'light' ? 'dark' : 'light';

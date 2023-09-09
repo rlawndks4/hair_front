@@ -60,9 +60,7 @@ const PostEdit = () => {
       router.push('/manager/post');
     }
   }
-  useEffect(()=>{
-    console.log(item)
-  },[item])
+
   return (
     <>
       {!loading &&
@@ -167,9 +165,9 @@ const PostEdit = () => {
                               img_src = await img_src.split(`"></p>`);
                               let base64 = img_src[0];
                               img_src = await base64toFile(img_src[0], 'note.png');
-                              const response = await uploadFileByManager({
-                                file: img_src
-                              });
+                              const response = await apiManager('upload/single', 'create', {
+                                post_file: img_src,
+                              })
                               note = await note.replace(base64, response?.url)
                             }
                           }

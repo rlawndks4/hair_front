@@ -29,7 +29,6 @@ const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
   //   />
   // );
   const getLogo = () => {
-    console.log(themeLayout)
     if (themeLayout == 'mini') {
       return themeDnsData.favicon_img
     } else {

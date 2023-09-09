@@ -165,7 +165,6 @@ const SignUp = (props) => {
                 return toast.error('비밀번호가 일치하지 않습니다.');
             }
             let result = await apiManager('auth/sign-up', 'create', user);
-            console.log(result)
             if (!result) {
                 return;
             }
