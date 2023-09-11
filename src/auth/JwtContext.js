@@ -109,7 +109,7 @@ export function AuthProvider({ children }) {
 
   // LOGIN
   const login = useCallback(async (user_name, user_pw) => {
-    const { data: response } = await axios.post(`/api/${router.asPath.split('/')[1] == 'manager' ? 'manager/' : ''}auth/sign-in`, {
+    const { data: response } = await axios.post(`/api/auth/sign-in`, {
       user_name,
       user_pw,
     });

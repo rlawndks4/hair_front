@@ -93,7 +93,7 @@ export const apiManager = (table, type, params) => {
         obj['brand_id'] = dns_data?.id;
     }
 
-    let base_url = `/api${pathname.split('/')[1] == 'manager' ? '/manager' : ''}`;
+    let base_url = `/api`;
     if (type == 'get') {
         return get(`${base_url}/${table}/${params?.id}`);
     }
