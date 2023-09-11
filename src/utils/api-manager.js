@@ -13,7 +13,7 @@ export const post = async (url, obj) => {
         formData = serialize(obj, form_data_options);
         let config = {
             headers: {
-                'Content-Type': "application/json; charset=utf-8",
+                'Content-Type': "multipart/form-data; charset=utf-8",
             }
         };
         const { data: response } = await axios.post(url, formData, config);
@@ -53,7 +53,7 @@ export const put = async (url, obj) => {
         formData = serialize(obj, form_data_options);
         let config = {
             headers: {
-                'Content-Type': "multipart/form-data",
+                'Content-Type': "multipart/form-data; charset=utf-8",
             }
         };
         const { data: response } = await axios.put(url, formData, config);

@@ -1,13 +1,26 @@
 import { Avatar, Box, Button, Card, Grid, Stack, TextField } from "@mui/material";
+import _ from "lodash";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useAuthContext } from "src/auth/useAuthContext";
 import { Col } from "src/components/elements/styled-components";
 import UserLayout from "src/layouts/user/UserLayout";
+import { apiManager } from "src/utils/api-manager";
+import { commarNumber } from "src/utils/function";
 
 
 const Home = () => {
     const { user } = useAuthContext();
     const router = useRouter();
+    const [point, setPoint] = useState(0);
+    useEffect(() => {
+        getPoint();
+    }, [])
+    const getPoint = async () => {
+        let data_ = await apiManager('points', 'list', {});
+        console.log(data_)
+        setPoint(_.sum((data_?.content??[]).map(itm=>{return itm.price})))
+    }
     return (
         <>
             <Grid container spacing={3}>
@@ -17,11 +30,12 @@ const Home = () => {
                             sx={{
                                 width: '84px',
                                 height: '84px',
-                                margin: 'auto 1rem auto auto'
+                                margin: 'auto 2rem auto auto'
                             }}
                         />
                         <Col style={{ alignItems: 'flex-start', margin: 'auto auto auto 0', rowGap: '1rem' }}>
-                            <div>{user.nickname}</div>
+                        <div>{user.nickname}</div>
+                        <div>포인트: {commarNumber(point)} P</div>
                             <Button type="submit" variant="contained" style={{ width: '100%' }} onClick={() => {
                                 router.push(`/user/my-page?type=0`)
                             }}>
