@@ -5,7 +5,6 @@ import { getLocalStorage } from "./local-storage";
 
 export const post = async (url, obj) => {
     try {
-        console.log(obj)
         let formData = new FormData();
         let form_data_options = {
             indices: true,
@@ -13,7 +12,7 @@ export const post = async (url, obj) => {
         formData = serialize(obj, form_data_options);
         let config = {
             headers: {
-                'Content-Type': "multipart/form-data; charset=utf-8",
+                'Content-Type': "multipart/form-data",
             }
         };
         const { data: response } = await axios.post(url, formData, config);
@@ -53,7 +52,7 @@ export const put = async (url, obj) => {
         formData = serialize(obj, form_data_options);
         let config = {
             headers: {
-                'Content-Type': "multipart/form-data; charset=utf-8",
+                'Content-Type': "multipart/form-data",
             }
         };
         const { data: response } = await axios.put(url, formData, config);
