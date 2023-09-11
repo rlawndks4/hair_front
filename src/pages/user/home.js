@@ -34,7 +34,7 @@ const Home = () => {
                             }}
                         />
                         <Col style={{ alignItems: 'flex-start', margin: 'auto auto auto 0', rowGap: '1rem' }}>
-                        <div>{user.nickname}</div>
+                        <div>{user?.nickname}</div>
                         <div>포인트: {commarNumber(point)} P</div>
                             <Button type="submit" variant="contained" style={{ width: '100%' }} onClick={() => {
                                 router.push(`/user/my-page?type=0`)

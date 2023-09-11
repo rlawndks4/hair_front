@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { apiManager } from "src/utils/api-manager";
 import { useModal } from "src/components/dialog/ModalProvider";
 import toast from "react-hot-toast";
+import { base64toFile } from "src/utils/function";
 const ReactQuill = dynamic(() => import('react-quill'), {
     ssr: false,
     loading: () => <p>Loading ...</p>,
@@ -56,35 +57,35 @@ const PostAdd = () => {
                         )
                     }} />
                  <ReactQuill
-                    className="max-height-editor"
-                    theme={'snow'}
-                    id={'content'}
-                    placeholder={''}
-                    value={item.note}
-                    modules={react_quill_data.modules}
-                    formats={react_quill_data.formats}
-                    onChange={async (e) => {
+                      className="max-height-editor"
+                      theme={'snow'}
+                      id={'content'}
+                      placeholder={''}
+                      value={item.note}
+                      modules={react_quill_data.modules}
+                      formats={react_quill_data.formats}
+                      onChange={async (e) => {
                         let note = e;
                         if (e.includes('<img src="') && e.includes('base64,')) {
-                            let base64_list = e.split('<img src="');
-                            for (var i = 0; i < base64_list.length; i++) {
-                                if (base64_list[i].includes('base64,')) {
-                                    let img_src = base64_list[i];
-                                    img_src = await img_src.split(`"></p>`);
-                                    let base64 = img_src[0];
-                                    img_src = await base64toFile(img_src[0], 'note.png');
-                                    const response = await apiManager('upload/single', 'create',{
-                                        post_file: img_src
-                                    });
-                                    note = await note.replace(base64, response?.url)
-                                }
+                          let base64_list = e.split('<img src="');
+                          for (var i = 0; i < base64_list.length; i++) {
+                            if (base64_list[i].includes('base64,')) {
+                              let img_src = base64_list[i];
+                              img_src = await img_src.split(`"></p>`);
+                              let base64 = img_src[0];
+                              img_src = await base64toFile(img_src[0], 'note.png');
+                              const response = await apiManager('upload/single', 'create', {
+                                post_file: img_src,
+                              })
+                              note = await note.replace(base64, response?.url)
                             }
+                          }
                         }
                         setItem({
-                            ...item,
-                            ['note']: note
+                          ...item,
+                          ['note']: note
                         });
-                    }} />
+                      }} />
                 <Button variant="contained" style={{
                     height: '48px', width: '120px', margin: '1rem 0 1rem auto'
                 }} onClick={() => {
