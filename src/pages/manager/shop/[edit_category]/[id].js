@@ -157,21 +157,36 @@ const ShopEdit = () => {
                         }
                       )
                     }} />
-                  <Stack spacing={1}>
-                    <TextField
-                      fullWidth
-                      label="메모"
-                      multiline
-                      rows={4}
-                      value={item.note}
-                      onChange={(e) => {
+                  <ReactQuill
+                    className="max-height-editor"
+                    theme={'snow'}
+                    id={'content'}
+                    placeholder={''}
+                    value={item.note}
+                    modules={react_quill_data.modules}
+                    formats={react_quill_data.formats}
+                    onChange={async (e) => {
+                        let note = e;
+                        if (e.includes('<img src="') && e.includes('base64,')) {
+                            let base64_list = e.split('<img src="');
+                            for (var i = 0; i < base64_list.length; i++) {
+                                if (base64_list[i].includes('base64,')) {
+                                    let img_src = base64_list[i];
+                                    img_src = await img_src.split(`"></p>`);
+                                    let base64 = img_src[0];
+                                    img_src = await base64toFile(img_src[0], 'note.png');
+                                    const response = await apiManager('upload/single', 'create',{
+                                        post_file: img_src
+                                    });
+                                    note = await note.replace(base64, response?.url)
+                                }
+                            }
+                        }
                         setItem({
-                          ...item,
-                          ['note']: e.target.value
-                        })
-                      }}
-                    />
-                  </Stack>
+                            ...item,
+                            ['note']: note
+                        });
+                    }} />
                 </Stack>
               </Card>
             </Grid>
