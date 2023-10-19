@@ -12,50 +12,24 @@ const AlarmList = () => {
   const { setModal } = useModal()
   const defaultColumns = [
     {
-      id: 'profile_img',
-      label: '유저프로필',
+      id: 'user_name',
+      label: '유저아이디',
       action: (row) => {
-        return <Avatar src={row['profile_img'] ?? "---"} />
+        return row['user_name'] ?? "---"
       }
     },
     {
-      id: 'nick_name',
-      label: '닉네임',
+      id: 'title',
+      label: '알림제목',
       action: (row) => {
-        return row['nick_name'] ?? "---"
-      }
-    },
-    {
-      id: 'phone_num',
-      label: '휴대폰번호',
-      action: (row) => {
-        return row['phone_num'] ?? "---"
+        return row['title'] ?? "---"
       }
     },
     {
       id: 'created_at',
-      label: '가입일',
+      label: '생성일',
       action: (row) => {
         return row['created_at'] ?? "---"
-      }
-    },
-    {
-      id: 'edit_password',
-      label: '비밀번호 변경',
-      action: (row) => {
-        return (
-          <>
-            <IconButton onClick={() => {
-              setDialogObj({ ...dialogObj, changePassword: true })
-              setChangePasswordObj({
-                user_pw: '',
-                id: row?.id
-              })
-            }}>
-              <Icon icon='material-symbols:lock-outline' />
-            </IconButton>
-          </>
-        )
       }
     },
     {

@@ -205,7 +205,7 @@ const TeacherList = () => {
             columns={columns}
             searchObj={searchObj}
             onChangePage={onChangePage}
-            add_button_text={'회원 추가'}
+            add_button_text={'미용사 추가'}
           />
         </Card>
       </Stack>

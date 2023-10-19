@@ -3,6 +3,7 @@ import { PATH_MANAGER } from '../../../routes/paths';
 // components
 import SvgColor from '../../../components/svg-color';
 import { useAuthContext } from 'src/auth/useAuthContext';
+import { Icon } from '@iconify/react';
 
 // ----------------------------------------------------------------------
 
@@ -122,6 +123,20 @@ const navConfig = () => {
           children: [
             { title: '게시물관리', path: PATH_MANAGER.post.list },
             { title: '게시물추가', path: PATH_MANAGER.post.add },
+
+          ],
+        },
+      ],
+    },
+    {
+      items: [
+        {
+          title: '알림관리',
+          path: PATH_MANAGER.alarm.root,
+          icon: <Icon icon={'mdi:bell-outline'} style={{ fontSize: '1.4rem' }} />,
+          children: [
+            { title: '알림관리', path: PATH_MANAGER.alarm.list },
+            { title: '알림추가', path: PATH_MANAGER.alarm.add },
 
           ],
         },

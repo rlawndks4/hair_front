@@ -27,12 +27,10 @@ const AlarmEdit = () => {
 
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState({
-    profile_file: undefined,
     user_name: '',
-    phone_num: '',
-    nick_name: '',
-    user_pw: '',
-    note: '',
+    title: '',
+    content: '',
+    link: '',
   })
 
   useEffect(() => {
@@ -67,41 +65,8 @@ const AlarmEdit = () => {
             <Grid item xs={12} md={6}>
               <Card sx={{ p: 2, height: '100%' }}>
                 <Stack spacing={3}>
-                  <Stack spacing={1}>
-                    <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
-                      프로필사진
-                    </Typography>
-                    <Upload file={item.profile_file || item.profile_img} onDrop={(acceptedFiles) => {
-                      const newFile = acceptedFiles[0];
-                      if (newFile) {
-                        setItem(
-                          {
-                            ...item,
-                            ['profile_file']: Object.assign(newFile, {
-                              preview: URL.createObjectURL(newFile),
-                            })
-                          }
-                        );
-                      }
-                    }} onDelete={() => {
-                      setItem(
-                        {
-                          ...item,
-                          ['profile_img']: '',
-                          ['profile_file']: undefined,
-                        }
-                      )
-                    }}
-                    />
-                  </Stack>
-                </Stack>
-              </Card>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Card sx={{ p: 2, height: '100%' }}>
-                <Stack spacing={3}>
                   <TextField
-                    label='아이디'
+                    label='유저아이디'
                     value={item.user_name}
                     onChange={(e) => {
                       setItem(
@@ -111,61 +76,49 @@ const AlarmEdit = () => {
                         }
                       )
                     }} />
-                  {router.query?.edit_category == 'add' &&
-                    <>
-                      <TextField
-                        label='패스워드'
-                        value={item.user_pw}
-
-                        type='password'
-                        onChange={(e) => {
-                          setItem(
-                            {
-                              ...item,
-                              ['user_pw']: e.target.value
-                            }
-                          )
-                        }} />
-                    </>}
+                </Stack>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Card sx={{ p: 2, height: '100%' }}>
+                <Stack spacing={3}>
                   <TextField
-                    label='닉네임'
-                    value={item.nick_name}
+                    label='알림제목'
+                    value={item.title}
                     onChange={(e) => {
                       setItem(
                         {
                           ...item,
-                          ['nick_name']: e.target.value
-                        }
-                      )
-                    }} />
-                  <TextField
-                    label='전화번호'
-                    value={item.phone_num}
-                    placeholder="하이픈(-) 제외 입력"
-                    type='number'
-                    onChange={(e) => {
-                      setItem(
-                        {
-                          ...item,
-                          ['phone_num']: e.target.value
+                          ['title']: e.target.value
                         }
                       )
                     }} />
                   <Stack spacing={1}>
-                  <TextField
-                        fullWidth
-                        label="고객메모"
-                        multiline
-                        rows={4}
-                        value={item.note}
-                        onChange={(e) => {
-                          setItem({
-                            ...item,
-                            ['note']: e.target.value
-                          })
-                        }}
-                      />
+                    <TextField
+                      fullWidth
+                      label="알림내용"
+                      multiline
+                      rows={4}
+                      value={item.content}
+                      onChange={(e) => {
+                        setItem({
+                          ...item,
+                          ['content']: e.target.value
+                        })
+                      }}
+                    />
                   </Stack>
+                  <TextField
+                    label='이동할링크'
+                    value={item.link}
+                    onChange={(e) => {
+                      setItem(
+                        {
+                          ...item,
+                          ['link']: e.target.value
+                        }
+                      )
+                    }} />
                 </Stack>
               </Card>
             </Grid>
@@ -174,7 +127,7 @@ const AlarmEdit = () => {
                 <Stack spacing={1} style={{ display: 'flex' }}>
                   <Button variant="contained" style={{
                     height: '48px', width: '120px', marginLeft: 'auto'
-                  }} onClick={()=>{
+                  }} onClick={() => {
                     setModal({
                       func: () => { onSave() },
                       icon: 'material-symbols:edit-outline',
