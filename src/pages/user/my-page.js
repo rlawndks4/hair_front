@@ -86,22 +86,26 @@ const MyPage = () => {
             id: 'date',
             label: '예약날짜',
             action: (row) => {
-              row['date'] = row?.date.toString();
-              return `${row['date'].substring(0,4)}-${row['date'].substring(4,6)}-${row['date'].substring(6,8)}`
+                row['date'] = row?.date.toString();
+                return `${row['date'].substring(0, 4)}-${row['date'].substring(4, 6)}-${row['date'].substring(6, 8)}`
             }
-          },
-          {
+        },
+        {
             id: 'time',
             label: '예약시간',
             action: (row) => {
-              return row['time'] ?? "---"
+                return row['time'] ?? "---"
             }
-          },
+        },
         {
             id: 'addr',
-            label: '상태',
+            label: '후기작성',
             action: (row) => {
-                return row['addr'] ?? "---"
+                return <IconButton onClick={() => {
+                    router.push(`/user/post/add?shop_id=${row?.shop_id}`)
+                }}>
+                    <Icon icon='icon-park-outline:write' />
+                </IconButton>
             }
         },
         {
