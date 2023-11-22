@@ -45,6 +45,13 @@ const MyPage = () => {
             }
         },
         {
+            id: 'teacher_nickname',
+            label: '미용사',
+            action: (row) => {
+                return row['teacher_nickname'] ?? "---"
+            }
+        },
+        {
             id: 'title',
             label: '제목',
             action: (row) => {
